@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 
 function Donor() {
-  // 1️⃣ State for form inputs
+  
   const [foodName, setFoodName] = useState("");
   const [expiryTime, setExpiryTime] = useState("");
 
-  // 2️⃣ State for countdown display
+  
   const [timeLeft, setTimeLeft] = useState(null);
 
-  // 3️⃣ Countdown logic
+  
   useEffect(() => {
     if (!expiryTime) return;
 
@@ -30,7 +30,7 @@ function Donor() {
       setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
     }, 1000);
 
-    // Cleanup when expiryTime changes or page unmounts
+    
     return () => clearInterval(interval);
   }, [expiryTime]);
 
