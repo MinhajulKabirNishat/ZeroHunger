@@ -1,55 +1,72 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  doc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../firebase/config";
-import { getRemainingTime } from "../utils/time";
 
 const Receiver = () => {
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Force re-render every second for live countdown
-  const [, forceUpdate] = useState(0);
+  
+  const fetchDonations = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "donations"));
+      const data = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setDonations(data);
+    } catch (error) {
+      console.error("Error fetching donations:", error);
+    }
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchDonations = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "donations"));
-        const data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setDonations(data);
-      } catch (error) {
-        console.error("Error fetching donations:", error);
-      }
-      setLoading(false);
-    };
-
     fetchDonations();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      forceUpdate((n) => n + 1);
-    }, 1000);
+  const claimDonation = async (id) => {
+    try {
+      const donationRef = doc(db, "donations", id);
+      await updateDoc(donationRef, {
+        status: "claimed",
+        claimedAt: new Date(),
+      });
 
-    return () => clearInterval(interval);
-  }, []);
+      
+      fetchDonations();
+    } catch (error) {
+      console.error("Error claiming donation:", error);
+      alert("Failed to claim donation");
+    }
+  };
+
+  
+  const availableDonations = donations.filter(
+    (item) => item.status === "available"
+  );
 
   return (
     <div className="min-h-screen bg-orange-50 p-8">
       <h1 className="text-3xl font-bold text-orange-700 mb-6">
-        Available Food 
+        Available Food
       </h1>
 
       {loading && <p>Loading donations...</p>}
 
-      {!loading && donations.length === 0 && (
-        <p>No food available right now.</p>
+      {!loading && availableDonations.length === 0 && (
+        <p className="text-gray-600">
+          No food available right now.
+        </p>
       )}
 
-      <div className="grid gap-4">
-        {donations.map((item) => (
+      <div className="grid gap-4 max-w-xl">
+        {availableDonations.map((item) => (
           <div
             key={item.id}
             className="bg-white p-4 rounded shadow border"
@@ -58,9 +75,13 @@ const Receiver = () => {
               Food: {item.foodItem}
             </p>
             <p>Quantity: {item.quantity}</p>
-            <p className="text-sm text-red-600 font-medium">
-              ⏳ {getRemainingTime(item.expiryTime)}
-            </p>
+
+            <button
+              onClick={() => claimDonation(item.id)}
+              className="mt-3 bg-orange-600 text-white px-4 py-1 rounded hover:bg-orange-700 transition"
+            >
+              Claim
+            </button>
           </div>
         ))}
       </div>
