@@ -5,12 +5,13 @@ import { db } from "../firebase/config";
 const Donor = () => {
   const [foodItem, setFoodItem] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [expiryTime, setExpiryTime] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!foodItem || !quantity) {
+    if (!foodItem || !quantity || !expiryTime) {
       alert("Please fill all fields");
       return;
     }
@@ -21,14 +22,16 @@ const Donor = () => {
       await addDoc(collection(db, "donations"), {
         foodItem: foodItem,
         quantity: Number(quantity),
-        createdAt: serverTimestamp(),
+        expiryTime: expiryTime,
         status: "available",
+        createdAt: serverTimestamp(),
       });
 
       alert("Donation added successfully!");
 
       setFoodItem("");
       setQuantity("");
+      setExpiryTime("");
     } catch (error) {
       console.error("Error adding donation:", error);
       alert("Something went wrong");
@@ -64,6 +67,16 @@ const Donor = () => {
               onChange={(e) => setQuantity(e.target.value)}
               className="w-full border rounded px-3 py-2"
               placeholder="5"
+            />
+          </div>
+
+          <div>
+            <label className="block font-medium">Expiry Time</label>
+            <input
+              type="datetime-local"
+              value={expiryTime}
+              onChange={(e) => setExpiryTime(e.target.value)}
+              className="w-full border rounded px-3 py-2"
             />
           </div>
 

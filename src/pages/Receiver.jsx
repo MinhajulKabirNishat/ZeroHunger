@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase/config";
+import { getRemainingTime } from "../utils/time";
 
 const Receiver = () => {
   const [donations, setDonations] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // Force re-render every second for live countdown
+  const [, forceUpdate] = useState(0);
 
   useEffect(() => {
     const fetchDonations = async () => {
@@ -24,10 +28,18 @@ const Receiver = () => {
     fetchDonations();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      forceUpdate((n) => n + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="min-h-screen bg-orange-50 p-8">
       <h1 className="text-3xl font-bold text-orange-700 mb-6">
-        Available Food 🍽️
+        Available Food 
       </h1>
 
       {loading && <p>Loading donations...</p>}
@@ -46,6 +58,9 @@ const Receiver = () => {
               Food: {item.foodItem}
             </p>
             <p>Quantity: {item.quantity}</p>
+            <p className="text-sm text-red-600 font-medium">
+              ⏳ {getRemainingTime(item.expiryTime)}
+            </p>
           </div>
         ))}
       </div>
@@ -54,4 +69,3 @@ const Receiver = () => {
 };
 
 export default Receiver;
-
