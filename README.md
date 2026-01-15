@@ -76,35 +76,38 @@ Every day, large amounts of perfectly edible food are wasted by businesses, whil
 
 ##  Project Structure
 
+```text
 ZeroHunger/
 ├── src/
-│ ├── pages/
-│ │ ├── Home.jsx
-│ │ ├── Donor.jsx
-│ │ ├── Receiver.jsx
-│ │ └── MapView.jsx
-│ ├── firebase/
-│ │ └── config.js
-│ ├── App.jsx
-│ └── main.jsx
-├── public/
-├── .env
-├── package.json
-└── README.md
+│   ├── pages/
+│   │   ├── Home.jsx      # Landing page for the app
+│   │   ├── Donor.jsx     # Dashboard for donating food
+│   │   ├── Receiver.jsx  # Dashboard for finding food
+│   │   └── MapView.jsx   # Visual map to locate food points
+│   ├── firebase/
+│   │   └── config.js     # Firebase connection and setup
+│   ├── App.jsx           # Main application routing
+│   └── main.jsx          # Entry point of the React app
+├── public/               # Static assets (images, icons)
+├── .env                  # Environment variables (HIDDEN)
+├── package.json          # Project dependencies
+└── README.md             # Project documentation
 
+```
 
----
-
-##  Installation & Setup 
+##  Installation & Setup (Beginner Friendly)
 
 ### Clone the repository
-```bash
-git clone https://github.com/MinhajulKabirNishat/ZeroHunger.git
-cd ZeroHunger
+
+<h4>git clone https://github.com/MinhajulKabirNishat/ZeroHunger.git<br>
+cd ZeroHunger</h4>
+
 ### Install dependencies
-npm install
+
+<b>npm install</b>
+
 ### Create .env file (IMPORTANT)
-Create a file named .env in the root directory:
+Create a file named .env in the root directory and add:
 
 VITE_FIREBASE_API_KEY=your_firebase_key
 VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -117,12 +120,15 @@ VITE_GOOGLE_MAPS_KEY=your_google_maps_api_key
 
 
 ### Run the project
-npm run dev
-Open in browser:
-http://localhost:5173
+
+<h4>npm run dev<br>
+Open in browser:</h4>
+
+<h4>http://localhost:5173</h4>
+<br>
 
 ### Firebase Setup Notes
-Firestore database used for donations
+Firestore database is used
 
 Collection name: donations
 
@@ -136,8 +142,8 @@ lat (number)
 
 lng (number)
 
-###Google Maps Setup Notes (Work going on this)
-Billing must be enabled (free $200/month)
+### Google Maps Setup Notes (Work ging on this)
+Billing must be enabled (Google gives $200 free/month)
 
 Required APIs:
 
@@ -145,14 +151,14 @@ Maps JavaScript API
 
 Places API (optional but recommended)
 
-API key loaded via environment variables
+API key is loaded using environment variables
 
 ### Future Enhancements
-User authentication (Donor vs Receiver login)
+User authentication (Donor vs Receiver)
 
 Reservation / claim locking system
 
-Expiry countdown timer
+Food expiry countdown timer
 
 NGO verification badges
 
@@ -163,18 +169,19 @@ Deployment (Firebase Hosting / Vercel)
 ### Learning Outcome
 This project helped practice:
 
-Full-stack thinking
+Full-stack development
 
 React fundamentals
 
-Real-time databases
+Firebase & real-time databases
 
-Third-party API integration
+Google Maps API integration
 
 Debugging real-world issues
 
-Professional GitHub documentation
+Writing professional GitHub documentation
 
-### Contribution
-This project is currently developed as a learning project.
+## Contribution
+This project is developed as a learning project.
 Suggestions and improvements are welcome.
+
