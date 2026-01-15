@@ -1,80 +1,83 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { db } from "../firebase/config";
 
-function Donor() {
-  
-  const [foodName, setFoodName] = useState("");
-  const [expiryTime, setExpiryTime] = useState("");
+const Donor = () => {
+  const [foodItem, setFoodItem] = useState("");
+  const [quantity, setQuantity] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  
-  const [timeLeft, setTimeLeft] = useState(null);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  
-  useEffect(() => {
-    if (!expiryTime) return;
+    if (!foodItem || !quantity) {
+      alert("Please fill all fields");
+      return;
+    }
 
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const expiry = new Date(expiryTime).getTime();
-      const difference = expiry - now;
+    setLoading(true);
 
-      if (difference <= 0) {
-        clearInterval(interval);
-        setTimeLeft("Expired");
-        return;
-      }
+    try {
+      await addDoc(collection(db, "donations"), {
+        foodItem: foodItem,
+        quantity: Number(quantity),
+        createdAt: serverTimestamp(),
+        status: "available",
+      });
 
-      const hours = Math.floor(difference / (1000 * 60 * 60));
-      const minutes = Math.floor((difference / (1000 * 60)) % 60);
-      const seconds = Math.floor((difference / 1000) % 60);
+      alert("Donation added successfully!");
 
-      setTimeLeft(`${hours}h ${minutes}m ${seconds}s`);
-    }, 1000);
+      setFoodItem("");
+      setQuantity("");
+    } catch (error) {
+      console.error("Error adding donation:", error);
+      alert("Something went wrong");
+    }
 
-    
-    return () => clearInterval(interval);
-  }, [expiryTime]);
+    setLoading(false);
+  };
 
   return (
-    <div style={{ padding: "20px", maxWidth: "400px" }}>
-      <h2> Donor Dashboard</h2>
-      <p>Add surplus food before it goes to waste.</p>
+    <div className="min-h-screen bg-green-50 flex items-center justify-center">
+      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+        <h1 className="text-2xl font-bold text-green-700 mb-6 text-center">
+          Donor Dashboard 
+        </h1>
 
-      {/* Food Form */}
-      <form>
-        <div>
-          <label>Food Name:</label><br />
-          <input
-            type="text"
-            value={foodName}
-            onChange={(e) => setFoodName(e.target.value)}
-            placeholder="e.g. Bread, Rice"
-          />
-        </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block font-medium">Food Item</label>
+            <input
+              type="text"
+              value={foodItem}
+              onChange={(e) => setFoodItem(e.target.value)}
+              className="w-full border rounded px-3 py-2"
+              placeholder="Rice, Bread, Cake..."
+            />
+          </div>
 
-        <br />
+          <div>
+            <label className="block font-medium">Quantity</label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+              className="w-full border rounded px-3 py-2"
+              placeholder="5"
+            />
+          </div>
 
-        <div>
-          <label>Expiry Time:</label><br />
-          <input
-            type="datetime-local"
-            value={expiryTime}
-            onChange={(e) => setExpiryTime(e.target.value)}
-          />
-        </div>
-
-        <br />
-
-        <button type="submit">Add Food</button>
-      </form>
-
-      {/* Countdown Display */}
-      {timeLeft && (
-        <p style={{ marginTop: "20px", fontWeight: "bold" }}>
-          ⏰ Time left: {timeLeft}
-        </p>
-      )}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition"
+          >
+            {loading ? "Adding..." : "Add Donation"}
+          </button>
+        </form>
+      </div>
     </div>
   );
-}
+};
 
 export default Donor;
