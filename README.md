@@ -109,77 +109,76 @@ cd ZeroHunger</h4>
 ### Create .env file (IMPORTANT)
 Create a file named .env in the root directory and add:
 
-VITE_FIREBASE_API_KEY=your_firebase_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-
+VITE_FIREBASE_API_KEY=your_firebase_key<br>
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain<br>
+VITE_FIREBASE_PROJECT_ID=your_project_id<br>
+VITE_FIREBASE_STORAGE_BUCKET=your_bucket<br>
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id<br>
+VITE_FIREBASE_APP_ID=your_app_id<br>
 VITE_GOOGLE_MAPS_KEY=your_google_maps_api_key
 
 
 ### Run the project
 
-<h4>npm run dev<br>
-Open in browser:</h4>
-
+<h4>npm run dev<br></h4>
+  <br>
+Open in browser:
 <h4>http://localhost:5173</h4>
 <br>
 
 ### Firebase Setup Notes
-Firestore database is used
+-Firestore database is used
 
-Collection name: donations
+-Collection name: donations
 
-Each document contains:
+-Each document contains:
 
-foodItem (string)
+-foodItem (string)
 
-quantity (number)
+-quantity (number)
 
-lat (number)
+-lat (number)
 
-lng (number)
+-lng (number)
 
 ### Google Maps Setup Notes (Work ging on this)
-Billing must be enabled (Google gives $200 free/month)
+<b>Billing must be enabled (Google gives $200 free/month)</b>
 
 Required APIs:
 
-Maps JavaScript API
+-Maps JavaScript API
 
-Places API (optional but recommended)
+-Places API (optional but recommended)
 
-API key is loaded using environment variables
+-API key is loaded using environment variables
 
 ### Future Enhancements
-User authentication (Donor vs Receiver)
+-User authentication (Donor vs Receiver)
 
-Reservation / claim locking system
+-Reservation / claim locking system
 
-Food expiry countdown timer
+-Food expiry countdown timer
 
-NGO verification badges
+-NGO verification badges
 
-Mobile-first UI improvements
+-Mobile-first UI improvements
 
-Deployment (Firebase Hosting / Vercel)
+-Deployment (Firebase Hosting / Vercel)
 
 ### Learning Outcome
 This project helped practice:
 
-Full-stack development
+-Full-stack development
 
-React fundamentals
+-React fundamentals
 
-Firebase & real-time databases
+-Firebase & real-time databases
 
-Google Maps API integration
+-Google Maps API integration
 
-Debugging real-world issues
+-Debugging real-world issues
 
-Writing professional GitHub documentation
+-Writing professional GitHub documentation
 
 ## Contribution
 This project is developed as a learning project.
